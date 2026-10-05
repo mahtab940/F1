@@ -13,7 +13,7 @@ For this source package, run `python3 -m http.server 4173 --directory dist` from
 3. Choose any season from 2000 through 2026, then select a car.
 4. Press Go racing.
 
-Controls: W/Up accelerates; S/Down brakes then reverses; A/D or Left/Right steers; C changes camera; R returns to the grid; Escape pauses. Touch steering and pedals appear on small screens. Sound is opt-in.
+Controls: W/Up accelerates; S/Down brakes then reverses; A/D or Left/Right steers; C changes camera; R returns to the grid; Escape pauses. Touch steering and pedals appear on small screens. Sound is opt-in. Controller: R2 / RT accelerates, L2 / LT brakes then reverses, and the left stick or D-pad steers. Connect a controller and press a button to activate it.
 
 Tracks, the last setup and best laps are stored in this browser when browser storage is available. JSON export/import lets you keep a portable circuit copy. Records are separate for each car, circuit shape and width.
 
@@ -84,3 +84,14 @@ For releases, bump the cache version in `dist/sw.js` whenever cached game files 
 
 ### Realism pass
 Darker fine-grain asphalt, worn kerbs, gravel shoulders, curved tyre deposits, carbon-fibre weave, tyre microtexture, brake discs, sculpted sidepods, and soft contact shadows beneath every car. Procedural clouds and revised daylight/golden-hour/night light balance add depth without external asset downloads. Guidance markers are subtler. Handling and fixed driving cameras remain unchanged. This is a procedural visual upgrade, not photorealistic scanned cars or a new simulation physics model.
+
+### Circuit environment update
+Continuous rolling terrain replaces the flat horizon strips. Grass now has broad color variation, dry patches and subtle mowing bands. A numbered ten-bay garage building with reflective upper glazing and canopies, plus three additional covered grandstands, gives the circuit more context. New building footprints are checked against the full custom track before placement. Both standalone HTML editions are rebuilt; offline cache version is v10.
+
+### F1 24-inspired presentation pass
+Daylight now starts by default with stronger directional contrast and weather-specific exposure. Finer asphalt, turquoise runoff strips, corner approach distance boards and APEX barrier panels add circuit detail. Modern cars have smoother chassis sections, cooling louvres, floor fences and revised clear-coat paint. The race HUD uses dark timing panels, a red accent and animated rev lights driven by the existing speed/gear model. These remain original procedural graphics, not an exact reproduction of F1 24.
+
+Verified in the browser in race mode; controller, physics and multiplayer regression checks pass. Both standalone editions are rebuilt; offline cache is v12.
+
+### Surface and aero detail update
+World-space asphalt grain and roughness variation fade with distance to limit shimmer. Car reflections now include a dark ground horizon; curved aerofoil wings replace rectangular flaps, and tyres include curved sidewall markings. High graphics uses 4096px directional shadows; Smooth retains 1024px shadows. Both standalone editions are rebuilt and offline cache is v13. Controller, physics and multiplayer checks pass.

@@ -20,3 +20,22 @@ body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-i
 @media(max-width:650px){header{gap:6px;padding:0 3%;flex-wrap:wrap;height:auto;min-height:83px;padding-block:10px}header nav{gap:8px}header button{padding:8px}#graphics{max-width:108px}.scene-top{gap:5px}.scene-top select{font-size:11px}.touch{padding-bottom:env(safe-area-inset-bottom)}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 .racing .multiplayer:has(#roomLobby[hidden]){display:none}
+
+/* Race summaries and live friends timing. */
+.pause{overflow:auto;padding:20px}.pause>div{width:min(650px,100%);max-height:100%;overflow:auto}.pause h2{font-size:32px}.stats-scroll{overflow-x:auto}.stats-table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums;text-align:left}.stats-table th,.stats-table td{padding:9px 8px;border-bottom:1px solid #597343;white-space:nowrap}.stats-table thead{color:#c2fa77}.stats-table tbody th{white-space:normal;overflow-wrap:anywhere;min-width:70px}#raceResults p,#raceResults details{font-size:12px;margin:12px 0}#raceResults ol{list-style:none;padding:0;line-height:1.8}.friends-stats{position:absolute;top:145px;left:20px;max-width:calc(100% - 40px);width:480px;padding:10px;background:#101b0cdd;border:1px solid #597343;border-radius:6px;pointer-events:auto}.friends-stats>strong{font-size:10px;color:#c2fa77}.friends-stats .stats-table{font-size:10px}.friends-stats .stats-table th,.friends-stats .stats-table td{padding:6px}.friends-stats{max-height:180px;overflow:auto}@media(max-width:620px){.friends-stats{left:12px;max-width:calc(100% - 24px);top:140px;max-height:145px}.stats-table{font-size:10px}.pause{padding:14px}}
+
+/* Broadcast-style race instruments, shared by desktop and touch layouts. */
+.racing .timing{background:linear-gradient(110deg,#11141eef,#1c2133df);border-left:4px solid #ef3340;border-radius:3px;box-shadow:0 8px 26px #0005;padding:14px 20px}
+.racing .timing small{color:#adb6c9;letter-spacing:1.5px;font-size:9px}
+.racing .timing strong{font-variant-numeric:tabular-nums;color:#fff}
+.speedometer{background:linear-gradient(120deg,#0c101aef,#202739ed);border:1px solid #b5c6e132;border-bottom:3px solid #ef3340;border-radius:4px;padding:23px 23px 12px;box-shadow:0 10px 32px #0007}
+.speedometer #speed{color:#fff;font-style:italic;font-variant-numeric:tabular-nums;text-shadow:0 2px 8px #0008}
+.speedometer #gear{background:#eef4fa;color:#131825;border-radius:3px}
+.rev-strip{position:absolute;top:9px;left:16px;right:16px;display:flex;gap:4px;height:5px}
+.rev-strip i{flex:1;background:#354052;border-radius:1px}
+.rev-strip i.lit{background:#61e997;box-shadow:0 0 5px #61e99780}
+.rev-strip i.lit:nth-child(n+5){background:#ef454c;box-shadow:0 0 5px #ef454c80}
+.rev-strip i.lit:nth-child(n+9){background:#9893ff;box-shadow:0 0 5px #9893ff80}
+.racing .scene-top>span{background:#111521df;border-left:3px solid #ef3340;padding:9px 14px;letter-spacing:1.5px}
+.racing #minimap{filter:drop-shadow(0 3px 4px #000b)}
+@media(max-width:620px){.racing .timing{padding:9px 12px}.speedometer{padding:19px 14px 9px}.rev-strip{gap:3px;left:10px;right:10px;top:7px}}

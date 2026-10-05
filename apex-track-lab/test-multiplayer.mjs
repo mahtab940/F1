@@ -5,7 +5,7 @@ await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const base=`http://127.0.0.1:${server.address().port}/api/`;
 async function post(action,data={},token){const r=await fetch(base+action,{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{})},body:JSON.stringify(data)});return {status:r.status,...await r.json()};}
 try{
- const host=await post('create',{name:'Host',track:{points:PRESETS[0].points,width:14,name:'Test'}});assert.equal(host.status,200);
+ const host=await post('create',{name:'Host',track:{points:PRESETS[0].points,width:14,name:'Test',laps:2}});assert.equal(host.status,200);
  const peers=[];for(let i=0;i<3;i++)peers.push(await post('join',{code:host.room.code,name:`Friend ${i}`}));assert.equal(peers[2].room.players.length,4);
  assert.equal((await post('join',{code:host.room.code})).status,400);
  assert.equal((await post('start',{},peers[0].token)).status,400);
@@ -23,6 +23,9 @@ try{
  const moved=await post('state',{state:{x:2,z:3,yaw:1,speed:40,lap:2}},host.token);assert.equal(moved.status,200);assert.equal(moved.room.players.find(p=>p.id===host.id).state.x,2);const polled=await post('state',{},peers[0].token);assert.equal(polled.room.players.find(p=>p.id===host.id).state.speed,40);
  assert.equal((await post('state',{state:{x:9000,z:3,yaw:1,speed:40,lap:2}},host.token)).status,400);
  let got=false;for(let i=0;i<12;i++){const text=new TextDecoder().decode((await reader.read()).value);if(text.includes('"speed":40')){got=true;break;}}assert.ok(got,'opponents receive movement');
+ const finished=await post('state',{state:{x:2,z:3,yaw:1,speed:0,lap:3,paused:true,finished:true,lapTimes:[30,31],raceTime:61,currentLapTime:0}},host.token);assert.equal(finished.status,200);
+ const results=(await post('state',{},peers[0].token)).room.players.find(p=>p.id===host.id).state;assert.equal(results.finished,true);assert.equal(results.raceTime,61);assert.deepEqual(results.lapTimes,[30,31]);
+ assert.equal((await post('state',{state:{x:2,z:3,yaw:1,speed:0,lap:3,lapTimes:[-1]}},host.token)).status,400);
  await post('leave',{},host.token);let transfer=false;for(let i=0;i<12;i++){const text=new TextDecoder().decode((await reader.read()).value);if(text.includes(`"host":"${peers[0].id}"`)){transfer=true;break;}}assert.ok(transfer,'host transfers');await reader.cancel();
  for(const peer of peers)await post('leave',{},peer.token);assert.equal((await post('join',{code:host.room.code})).status,400);
  console.log('PASS: four-player cap, invite join, shared track, private tokens, host-only start, movement relay, validation, host transfer, room cleanup, chat delivery, sender identity, room isolation, chat validation and throttling.');

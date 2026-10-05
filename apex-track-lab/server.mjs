@@ -32,7 +32,9 @@ export const server=http.createServer(async(req,res)=>{try{
  const entry=tokens.get(req.headers.authorization?.replace(/^Bearer /,''));if(!entry)return res.writeHead(401).end();const {r,p}=entry;p.seen=Date.now();
  if(url.pathname==='/api/leave')leave(r,p);
  else if(url.pathname==='/api/start'){if(r.host!==p.id)fail('Only the host can start');if(r.players.size<2)fail('Wait for at least one friend');if(!r.started){r.started=true;broadcast(r);}}
- else if(url.pathname==='/api/state'){const s=b.state;if(r.started&&s){if(!['x','z','yaw','speed','lap'].every(k=>Number.isFinite(s[k]))||Math.abs(s.x)>3000||Math.abs(s.z)>3000||Math.abs(s.yaw)>1e6||s.lap<1||s.lap>1e6||Math.abs(s.speed)>1000)fail('Invalid position');p.state={x:s.x,z:s.z,yaw:s.yaw,speed:s.speed,lap:Math.floor(s.lap),paused:!!s.paused};}result={ok:true,room:snapshot(r)};}
+ else if(url.pathname==='/api/state'){const s=b.state;if(r.started&&s){if(!['x','z','yaw','speed','lap'].every(k=>Number.isFinite(s[k]))||Math.abs(s.x)>3000||Math.abs(s.z)>3000||Math.abs(s.yaw)>1e6||s.lap<1||s.lap>1e6||Math.abs(s.speed)>1000)fail('Invalid position');const times=s.lapTimes??[];
+ if(!Array.isArray(times)||times.length>10000||times.some(t=>!Number.isFinite(t)||t<=0)||s.raceTime!=null&&(!Number.isFinite(s.raceTime)||s.raceTime<0)||s.currentLapTime!=null&&(!Number.isFinite(s.currentLapTime)||s.currentLapTime<0))fail('Invalid race stats');
+ p.state={x:s.x,z:s.z,yaw:s.yaw,speed:s.speed,lap:Math.floor(s.lap),paused:!!s.paused,lapTimes:times,raceTime:s.raceTime??0,currentLapTime:s.currentLapTime??0,finished:!!s.finished&&r.track.laps>0&&times.length===r.track.laps};}result={ok:true,room:snapshot(r)};}
  else if(url.pathname==='/api/chat'){
  const text=typeof b.text==='string'?b.text.trim():'';
  if(!text||text.length>300)fail('Write a message between 1 and 300 characters.');
