@@ -1,0 +1,13 @@
+{
+  "name": "F1-track-lab",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node test-physics.mjs && node test-multiplayer.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
