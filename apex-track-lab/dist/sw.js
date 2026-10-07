@@ -1,5 +1,5 @@
 // Bump the version whenever the app shell changes. Updates activate after all app windows close.
-const CACHE = 'apex-shell-v14';
+const CACHE = 'apex-shell-v15';
 const ASSETS = ['./', './index.html', './styles.css', './app.js', './engine.js', './track-editor.js', './cars.js', './assets/three.module.js', './manifest.webmanifest', './assets/icon-180.png', './assets/icon-192.png', './assets/icon-512.png'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS))));
 self.addEventListener('activate', event => event.waitUntil((async () => {
