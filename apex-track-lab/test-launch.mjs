@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+const source=readFileSync(new URL('./dist/app.js',import.meta.url),'utf8');
+let builds=0;
+const button={style:{}};
+const context=vm.createContext({clearTimeout(){},trackTimer:null,stats:{valid:true},points:[{x:.2,y:.3}],trackWidth:14,engine:{setTrack(){builds++;},setCamera(){}},restoreRecord(){},persistSession(){},ready:true,$:()=>button,document:{querySelectorAll:()=>[button]}});
+vm.runInContext(source.slice(source.indexOf("let syncedTrack="),source.indexOf('function updateTrack')),context);
+vm.runInContext('syncTrack();syncTrack()',context);
+assert.equal(builds,1,'Launching an unchanged circuit reuses the preview');
+vm.runInContext('points[0].x=.4;syncTrack();trackWidth=16;syncTrack()',context);
+assert.equal(builds,3,'Point and width edits rebuild the circuit');
+vm.runInContext('stats.valid=false;syncTrack()',context);
+assert.equal(builds,3,'Invalid circuits do not rebuild');
+const buttons={raceBtn:{style:{}},startRoom:{}};
+context.$=id=>buttons[id];context.online={id:'host'};
+vm.runInContext(source.slice(source.indexOf('function updateLaunchButtons('),source.indexOf('function lockSetup(')),context);
+for(const [host,count,started,disabled] of [['host',1,false,true],['host',2,false,false],['guest',2,false,true],['host',2,true,true]]){
+ context.room={host,players:Array(count).fill({}),started};
+ vm.runInContext('updateLaunchButtons(room)',context);
+ assert.equal(buttons.raceBtn.disabled,disabled,`${host}, ${count} drivers, started=${started}`);
+ assert.equal(buttons.startRoom.disabled,disabled);
+}
+vm.runInContext('stats.valid=true;updateLaunchButtons(null)',context);
+assert.equal(buttons.raceBtn.disabled,false,'Leaving restores solo launch');
+let requests=0;
+context.online={id:'host',room:{host:'host',players:[{},{}],started:false}};
+context.roomRequest=async action=>{assert.equal(action,'start');requests++;};
+context.roomMessage=()=>{};context.toast=()=>{};
+vm.runInContext(source.slice(source.indexOf('async function startRoomRace('),source.indexOf("$('startRoom').onclick=startRoomRace;")),context);
+await vm.runInContext('startRoomRace()',context);
+assert.equal(requests,1,'Host starts a room with two players');
+context.online.id='guest';
+await vm.runInContext('startRoomRace()',context);
+assert.equal(requests,1,'Guest cannot start');
+assert(source.includes("$('raceBtn').onclick=()=>{if(multiplayerActive())return startRoomRace();"),'Go racing uses the room launch handler');
+console.log('PASS: circuit reuse, edits, host/guest launch controls and room start.');
