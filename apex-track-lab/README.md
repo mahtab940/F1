@@ -54,13 +54,19 @@ The host's circuit is shared automatically and setup is locked while in a room. 
 
 Run `npm test` to check physics and multiplayer: capacity, invites, shared state, authorization, movement relay, malformed positions, host transfer and cleanup. Run `python3 build-standalone.py` after source edits to rebuild both single-file copies.
 
-### Current temporary play link
+### Deploy on Render (no local server required)
 
-https://collector-loans-higher-definitions.trycloudflare.com
+The repository-root `render.yaml` deploys the game and room API together as one Node web service. Both players use its public HTTPS address; neither player needs to run a server, a tunnel, or any commands while playing.
 
-Started October 5, 2026 using Cloudflare Quick Tunnel. Keep this computer awake and both server processes running. This link is temporary and changes when the tunnel is restarted; it is not permanent hosting. The browser now exchanges room snapshots with ordinary HTTP requests, which work through Quick Tunnel without SSE. The optional SSE endpoint remains available for other clients.
+1. Push these files, including `render.yaml` and `apex-track-lab/dist`, to your GitHub repository.
+2. In Render, select **New → Blueprint**, connect this repository, and deploy the detected service.
+3. Once the service is live, open the HTTPS URL shown by Render. Create a room and copy its invite link to your friend.
 
-To start again: run `HOST=127.0.0.1 PORT=4173 npm start`, then in another terminal run `./tools/cloudflared tunnel --url http://127.0.0.1:4173 --no-autoupdate`. Share the new HTTPS address printed by Cloudflare. Only the game and its room API are served.
+For an existing Render service, use **Web Service**, runtime **Node**, root directory `apex-track-lab`, build command `node --check server.mjs`, start command `npm start`, and health check path `/`. Set `NODE_VERSION=22` and `HOST=0.0.0.0`; Render supplies `PORT`. If the existing deployment is a Static Site, create a Web Service instead. Open the new service URL for multiplayer.
+
+Keep one instance because rooms and chat live in that server's memory. A restart or deployment clears rooms; create a new room afterward. The free plan sleeps after 15 idle minutes and can take about a minute to wake up. For always-on availability, choose a paid instance in Render. See [Render's free service behavior](https://render.com/docs/free) and [Blueprint configuration](https://render.com/docs/blueprint-spec).
+
+The previous Cloudflare Quick Tunnel address is retired from these instructions. Render runs independently of your computer.
 
 ### Room chat
 

@@ -3,8 +3,11 @@ import {server} from './server.mjs';
 import {PRESETS} from './dist/track-editor.js';
 await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const base=`http://127.0.0.1:${server.address().port}/api/`;
-async function post(action,data={},token){const r=await fetch(base+action,{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{})},body:JSON.stringify(data)});return {status:r.status,...await r.json()};}
+const proxyHeaders={Origin:`https://${new URL(base).host}`,'X-Forwarded-Proto':'https'};
+async function post(action,data={},token){const r=await fetch(base+action,{method:'POST',headers:{...proxyHeaders,'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{})},body:JSON.stringify(data)});return {status:r.status,...await r.json()};}
 try{
+ const page=await fetch(new URL('/',base));assert.equal(page.status,200);assert.match(await page.text(),/app\.js/);
+ assert.equal((await fetch(base+'create',{method:'POST',headers:{...proxyHeaders,Origin:'https://unrelated.example'},body:'{}'})).status,403);
  const host=await post('create',{name:'Host',track:{points:PRESETS[0].points,width:14,name:'Test',laps:2}});assert.equal(host.status,200);
  const peers=[];for(let i=0;i<3;i++)peers.push(await post('join',{code:host.room.code,name:`Friend ${i}`}));assert.equal(peers[2].room.players.length,4);
  assert.equal((await post('join',{code:host.room.code})).status,400);

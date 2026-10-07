@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: apex-track-lab
+    runtime: node
+    plan: free
+    rootDir: apex-track-lab
+    buildCommand: node --check server.mjs
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: HOST
+        value: 0.0.0.0
