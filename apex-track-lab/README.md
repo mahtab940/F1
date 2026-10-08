@@ -70,7 +70,7 @@ The previous Cloudflare Quick Tunnel address is retired from these instructions.
 
 ### Room chat
 
-Create or join a room to see Room chat. Messages are shared with everyone in that room, in the lobby and during driving. Press Enter or Send to send; Escape leaves the message field so you can drive again. Collapse Room chat to save space; new messages show an unread count. Typing clears held driving inputs and does not trigger steering, camera, or reset shortcuts. The last 50 messages are kept while the room exists (300 characters per message); room history disappears when the room closes or the server restarts.
+Create or join a room to see Room chat. Messages are shared with everyone in that room, in the lobby and during driving. Press Enter or Send to send; Escape leaves the message field so you can drive again. While driving, the room collapses into one clickable Room chat box and live race standings stay hidden until the finish. Click Room chat to open or close it; new messages show an unread count. Typing clears held driving inputs and does not trigger steering, camera, or reset shortcuts. The last 50 messages are kept while the room exists (300 characters per message); room history disappears when the room closes or the server restarts.
 
 ## Installable app (Android, PC, iPhone)
 
