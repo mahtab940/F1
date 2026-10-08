@@ -101,3 +101,6 @@ Verified in the browser in race mode; controller, physics and multiplayer regres
 
 ### Surface and aero detail update
 World-space asphalt grain and roughness variation fade with distance to limit shimmer. Car reflections now include a dark ground horizon; curved aerofoil wings replace rectangular flaps, and tyres include curved sidewall markings. High graphics uses 4096px directional shadows; Smooth retains 1024px shadows. Both standalone editions are rebuilt and offline cache is v13. Controller, physics and multiplayer checks pass.
+
+### Car details
+Every car has a separate Details button with chassis/season context, engine specification, and online driver, Grand Prix win and podium records from Jolpica F1. Results are constructor-season totals across chassis variants, excluding sprints; they are cached for the current page session. Internet is required for results, including in the standalone edition. Unavailable records are shown as unavailable rather than zero wins. The 2018 Force India entries share the source’s combined constructor record.

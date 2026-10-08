@@ -4,7 +4,7 @@ import base64
 root=Path(__file__).resolve().parent
 def uri(text):return 'data:text/javascript;base64,'+base64.b64encode(text.encode()).decode()
 urls={}
-for name in ['assets/three.module.js','track-editor.js','cars.js','engine.js','app.js']:
+for name in ['assets/three.module.js','track-editor.js','cars.js','car-details.js','engine.js','app.js']:
     text=(root/'dist'/name).read_text()
     if name=='app.js': text=text.replace("if('serviceWorker' in navigator &&", "if(false && 'serviceWorker' in navigator &&")
     for dep,url in urls.items():text=text.replace("'./"+dep+"'", "'"+url+"'")

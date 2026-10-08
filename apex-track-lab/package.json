@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node server.mjs",
-    "test": "node test-launch.mjs && node test-controller.mjs && node test-physics.mjs && node test-multiplayer.mjs"
+    "test": "node test-car-details.mjs && node test-launch.mjs && node test-controller.mjs && node test-physics.mjs && node test-multiplayer.mjs"
   },
   "engines": {
     "node": ">=18"
