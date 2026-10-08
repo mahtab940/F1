@@ -44,3 +44,5 @@ body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-i
 .racing #roomChat{border:0;margin:0;padding:0}
 .racing .multiplayer:has(#roomChat:not([open])) #roomTitle,.racing .multiplayer:has(#roomChat:not([open])) #roomPlayers,.racing .multiplayer:has(#roomChat:not([open])) #leaveRoom,.racing .multiplayer:has(#roomChat:not([open])) #roomStatus{display:none}
 .racing #roomChat summary{padding:6px 0}
+
+.car-card{min-width:0;display:flex;flex-direction:column;gap:5px}.car-card>.car{width:100%;flex:1}.car-details-button{width:100%;font-size:11px;color:var(--lime);min-height:36px}#carDetailsTitle{padding-right:20px}#carDetailsDialog{max-height:85vh;overflow:auto}
